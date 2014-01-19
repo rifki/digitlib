@@ -1,3 +1,3 @@
 DigitLib
 ========
-DigitLib is PHP library for microsite
+DigitLib is simple PHP library for microsite
