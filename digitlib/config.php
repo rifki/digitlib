@@ -68,3 +68,10 @@ defined('FB_APP_SECRET') ? null : define('FB_APP_SECRET', 'YOUR_FB_SECRET');
  * For detail: http://php.net/manual/en/function.time.php
  */
 defined('TODAY') ? null : define('TODAY', time());
+
+/**
+ * API username and password
+ */
+defined('API_USERNAME') ? null : defined('API_USERNAME', null);
+defined('API_PASSWORD') ? null : defined('API_PASSWORD', null);
+//defined('API_KEY') ? null : defined('API_KEY', 'your_api_key');

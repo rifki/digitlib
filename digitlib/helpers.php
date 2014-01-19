@@ -141,139 +141,150 @@ class Helpers
 
     /**
      * CURL get method.
-     * Format XML or JSON
-     * @param type $url
-     * @param type $format
-     * @param type $username
-     * @param type $password
-     * @return type
+     * @param null $url
+     * @param null $data
+     * @return mixed|null
      */
-    public static function curlGet($url, $format, $username = null, $password = null)
+    public static function curlGet($url = null, $data = null)
     {
-        $ch = curl_init($url);
+        $str = null;
+        if (is_array($data)) {
+            $str = '?';
+            foreach ($data as $key => $value) {
+                $str .= $key.'='.$value.'&';
+            }
+            rtrim($str,'&');
+        }
 
-        if (isset($username) != null && isset($password) != null) {
-            curl_setopt($ch, CURLOPT_USERPWD, $username.':'.$password);
-        } else {
-            die('You must enter a valid username and password');
+        $ch = curl_init();
+
+        // check valid login API
+        if (API_USERNAME != null && API_PASSWORD != null) {
+            curl_setopt($ch, CURLOPT_USERPWD, API_USERNAME.':'.API_PASSWORD);
         }
 
         curl_setopt_array($ch, array(
             CURLOPT_HEADER          => 0,
-            CURLOPT_RETURNTRANSFER  => 1,
+            CURLOPT_RETURNTRANSFER  => true,
+            CURLOPT_URL             => $url.$str,
+            CURLOPT_SSL_VERIFYPEER  => 0,
+            CURLOPT_SSL_VERIFYHOST  => 0,
+        ));
+
+        //$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $data = curl_exec($ch);
+        curl_close($ch);
+
+        return $data;
+    }
+
+    public static function curlPost($url = null, $data = null)
+    {
+        $str = null;
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                $str .= $key.'='.$value.'&';
+            }
+            rtrim($str,'&');
+        }
+
+        $ch = curl_init();
+
+        // check valid login API
+        if (API_USERNAME != null && API_PASSWORD != null) {
+            curl_setopt($ch, CURLOPT_USERPWD, API_USERNAME.':'.API_PASSWORD);
+        }
+
+        curl_setopt_array($ch, array(
+            CURLOPT_POST            => 1,
+            CURLOPT_POSTFIELDS      => $str,
+            CURLOPT_RETURNTRANSFER  => true,
             CURLOPT_URL             => $url,
             CURLOPT_SSL_VERIFYPEER  => 0,
             CURLOPT_SSL_VERIFYHOST  => 0,
         ));
 
         //$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-        if (isset($format) == 'json') {
-            $data = curl_exec($ch);
-        } elseif (isset ($format) == 'xml') {
-            $data = simplexml_load_string(curl_exec($ch));
-        } else {
-            die('Invalid format');
-        }
-
+        $result = curl_exec($ch);
         curl_close($ch);
 
-        return $data;
+        return $result;
     }
 
     /**
      * CURL put method
-     * @param type $data
-     * @param type $url
-     * @param type $format
-     * @param type $username
-     * @param type $password
-     * @return type
+     * @param null $url
+     * @param null $data
+     * @return mixed
      */
-    public static function curlPut($data, $url, $format, $username = null, $password = null)
+    public static function curlPut($url = null, $data = null)
     {
-        $ch = curl_init($url);
-
-        if (isset($username) != null && isset($password) != null) {
-            curl_setopt($ch, CURLOPT_USERPWD, $username.':'.$password);
-        } else {
-            die('You must enter a valid username and password');
+        $str = null;
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                $str .= $key.'='.$value.'&';
+            }
+            rtrim($str,'&');
         }
 
-        $string = '';
-        foreach ($data as $key => $value)
-            $string = $key.'='.$value.'&';
-        rtrim($string);
+        $ch = curl_init();
+
+        // check valid login API
+        if (API_USERNAME != null && API_PASSWORD != null) {
+            curl_setopt($ch, CURLOPT_USERPWD, API_USERNAME.':'.API_PASSWORD);
+        }
 
         curl_setopt_array($ch, array(
-            CURLOPT_HEADER          => 0,
-            CURLOPT_RETURNTRANSFER  => 1,
+            CURLOPT_PUT             => 1,
+            CURLOPT_POSTFIELDS      => $str,
+            CURLOPT_RETURNTRANSFER  => true,
             CURLOPT_URL             => $url,
-            CURLOPT_POSTFIELDS      => $string,
-            CURLOPT_CUSTOMREQUEST   => 'PUT',
             CURLOPT_SSL_VERIFYPEER  => 0,
             CURLOPT_SSL_VERIFYHOST  => 0,
         ));
 
         //$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-        if (isset($format) == 'json') {
-            $data = curl_exec($ch);
-        } elseif (isset ($format) == 'xml') {
-            $data = simplexml_load_string(curl_exec($ch));
-        } else {
-            die('Invalid format');
-        }
-
+        $result = curl_exec($ch);
         curl_close($ch);
 
-        return $data;
+        return $result;
     }
 
     /**
      * CURL delete method
-     * @param type $data
-     * @param type $url
-     * @param type $format
-     * @param type $username
-     * @param type $password
-     * @return type
+     * @param null $url
+     * @param null $data
+     * @return mixed|null
      */
-    public static function curlDelete($data, $url, $format, $username = null, $password = null)
+    public static function curlDelete($url = null, $data = null)
     {
-        $ch = curl_init($url);
-
-        if (isset($username) != null && isset($password) != null) {
-            curl_setopt($ch, CURLOPT_USERPWD, $username.':'.$password);
-        } else {
-            die('You must enter a valid username and password');
+        $str = null;
+        if (is_array($data)) {
+            $str = '?';
+            foreach ($data as $key => $value) {
+                $str .= $key.'='.$value.'&';
+            }
+            rtrim($str,'&');
         }
 
-        $string = '';
-        foreach ($data as $key => $value)
-            $string = $key.'='.$value.'&';
-        rtrim($string);
+        $ch = curl_init();
+
+        // check valid login API
+        if (API_USERNAME != null && API_PASSWORD != null) {
+            curl_setopt($ch, CURLOPT_USERPWD, API_USERNAME.':'.API_PASSWORD);
+        }
 
         curl_setopt_array($ch, array(
-            CURLOPT_HEADER          => 0,
-            CURLOPT_RETURNTRANSFER  => 1,
-            CURLOPT_URL             => $url,
-            CURLOPT_POSTFIELDS      => $string,
             CURLOPT_CUSTOMREQUEST   => 'DELETE',
+            CURLOPT_HEADER          => 0,
+            CURLOPT_RETURNTRANSFER  => true,
+            CURLOPT_URL             => $url.$str,
             CURLOPT_SSL_VERIFYPEER  => 0,
-            CURLOPT_SSL_VERIFYHOST  => 0,
+            CURLOPT_SSL_VERIFYHOST  => 0
         ));
 
         //$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-        if (isset($format) == 'json') {
-            $data = curl_exec($ch);
-        } elseif (isset ($format) == 'xml') {
-            $data = simplexml_load_string(curl_exec($ch));
-        } else {
-            die('Invalid format');
-        }
-
+        $data = curl_exec($ch);
         curl_close($ch);
 
         return $data;
@@ -506,13 +517,20 @@ class Helpers
                 break;
         }
 
-        if($name != "") $move = move_uploaded_file($file['tmp_name'], 'uploads' .'/'. $name);
+        if ($name != "")
+            # Create directory uploads in root app (is not exist)
+            if (!file_exists(SITE_PATH.'/uploads')) {
+                mkdir(SITE_PATH.'/uploads');
+                $move = move_uploaded_file($file['tmp_name'], SITE_PATH.'/uploads/'.$name);
+            } else {
+                $move = move_uploaded_file($file['tmp_name'], SITE_PATH.'/uploads/'.$name);
+            }
 
         if ($move) {
-            $temp = getimagesize('uploads' .'/'. $name);
+            $temp = getimagesize(SITE_PATH.'/uploads/'. $name);
             // resize
             $scale = min(900/$temp[0], 450/$temp[1]);
-            $this->resizeImage($file['type'], 'uploads' .'/'. $name, $temp[0], $temp[1], $scale, $isResize);
+            $this->resizeImage($file['type'], SITE_PATH.'/uploads/'. $name, $temp[0], $temp[1], $scale, $isResize);
             return $name;
         }
 
