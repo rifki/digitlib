@@ -43,7 +43,7 @@ defined('DB_PASSWORD') ? null : define('DB_PASSWORD', 'root');
 /**
  * Database name
  */
-defined('DB_NAME') ? null : define('DB_NAME', 'gom_microsite_new');
+defined('DB_NAME') ? null : define('DB_NAME', 'dbname');
 
 /**
  * Base url
