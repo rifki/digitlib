@@ -140,7 +140,7 @@ class Helpers
     }
 
     /**
-     * CURL get method.
+     * curl GET method
      * @param null $url
      * @param null $data
      * @return mixed|null
@@ -178,6 +178,12 @@ class Helpers
         return $data;
     }
 
+    /**
+     * curl POST method
+     * @param null $url
+     * @param null $data
+     * @return mixed
+     */
     public static function curlPost($url = null, $data = null)
     {
         $str = null;
@@ -350,20 +356,6 @@ class Helpers
         }
     }
 
-    # continue...
-    public function paginator($limit, $request) {
-        if (empty($request)) {
-            $posisi  = 0;
-            $request = 1;
-        } else {
-            $posisi = ($request - 1) * $limit;
-        }
-
-        $db = new Database();
-        $db->select($table, $where, $orderby);
-    }
-
-
     /**
      * Date format indonesia
      * @return type string
@@ -378,16 +370,6 @@ class Helpers
 
         return ($weekID[$weekEN].",\n".$day.' '.$monthID[$monthEN]."\n".$year);
     }
-
-    /**
-     * Facebook meta
-     */
-    public static function facebookMeta() {}
-
-    /**
-     * Facebook Connect
-     */
-    public static function facebookConnect() {}
 
     /**
      * Send Mail
