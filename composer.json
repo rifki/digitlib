@@ -1,0 +1,13 @@
+{
+        "name" : "rifki/digitlib",
+        "description" : "A PHP Library for microsite",
+        "type" : "library",
+        "keywords": ["library"],
+        "homepage": "http://github.com/rifki/digitlib",
+        "authors": [
+           {
+            "name": "Muhamad Rifki",
+            "email": "rifki@rifkilabs.net"
+           }
+        ]
+}
